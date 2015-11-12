@@ -14,19 +14,19 @@
       <div class="row">
         <div class="col-sm-3">
           <p>loan name</p>
-          <input id="loan-name" ng-model="loanName" class="form-control" placeholder="$0">
+          <input class="loan-name form-control" ng-model="loan.name" placeholder="$0">
         </div>
         <div class="col-sm-3">
           <p>current balance</p>
-          <input id="current-balance" ng-model="currentBalance" class="form-control" placeholder="$0">
+          <input class="current-balance form-control" ng-model="loan.balance" placeholder="$0">
         </div>
         <div class="col-sm-3">
           <p>minimum payment</p>
-          <input id="minimum-payment" ng-model="minimumPayment" class="form-control" placeholder="$0">
+          <input class="minimum-payment form-control" ng-model="loan.minPayment" placeholder="$0">
         </div>
         <div class="col-sm-2">
           <p>interest rate</p>
-          <input id="interest-rate" ng-model="interestRate" class="form-control" placeholder="0%">
+          <input class="interest-rate form-control" ng-model="loan.rate" placeholder="0%">
         </div>
         <div class="col-sm-1">
           <button ng-click="deleteLoan()">x</button>
@@ -44,11 +44,16 @@
     <div class="row">
       <div class="col-sm-3">
         <p>monthly payment</p>
-        <input id="monthly-payment" ng-model="monthlyPayment" class="form-control" placeholder="$0">
+        <input class="monthly-payment form-control" ng-model="monthlyPayment" placeholder="$0">
       </div>
       <div class="col-sm-3">
         <p>&nbsp;</p>
         <button class="btn btn-primary" ng-click="calculatePayoff()">Calculate</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-3">
+        <p>{{payoffTime}} months</p>
       </div>
     </div>
     <!-- <form ng-submit="addPost()"

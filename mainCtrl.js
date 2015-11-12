@@ -3,8 +3,9 @@ angular.module('digOut')
     '$scope',
     'localStorage',
     function($scope, localStorage){
+    var monthlyPayment = $scope.monthlyPayment;
+    $scope.loans = localStorage.loans;
 
-    $scope.loans = localStorage.loans
     $scope.addLoanForm = function(){
       localStorage.add();
     };
@@ -13,6 +14,8 @@ angular.module('digOut')
     }
 
     $scope.calculatePayoff = function(){
-      // console.log($scope.loanName);
+      $scope.payoffTime = localStorage.payoff($scope.monthlyPayment);
     }
+
+
   }]);
