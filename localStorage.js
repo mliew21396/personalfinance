@@ -8,7 +8,7 @@ angular.module('digOut')
       },
 
       delete: function(loan) {
-        store.loans.splice(store.loans.indexOf(todo), 1);
+        store.loans.splice(store.loans.indexOf(loan), 1);
       }
     };
     return store
