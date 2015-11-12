@@ -6,10 +6,10 @@ angular.module('digOut')
 
     $scope.loans = localStorage.loans
     $scope.addLoanForm = function(){
-      localStorage.add(new Object())
+      localStorage.add();
     };
     $scope.deleteLoan = function(){
-      localStorage.delete(this)
+      localStorage.delete(this);
     }
 
     $scope.calculatePayoff = function(){
