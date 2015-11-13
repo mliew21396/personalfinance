@@ -22,22 +22,29 @@ angular.module('digOut')
           console.log(currentBalance);
 
 
-          // // Loop over months
-          // var counter = 0;
-          // while(Object.keys(remainingLoans).length > 0) {
-          //   counter++;
-          //   // if (counter > 12*100) {
-          //   //   return null;
-          //   // };
+          // Loop over months
+          var counter = 0;
+          while(Object.keys(remainingLoans).length > 0) {
+            counter++;
+            // if (counter > 12*100) {
+            //   return null;
+            // };
 
-          //   var extraPayment = monthlyPayment;
-          //   remainingLoans.forEach(function(loan){
-          //     extraPayment = extraPayment - loan[minPayment]
-          //   })
+            var extraPayment = monthlyPayment;
+            remainingLoans.forEach(function(loan){
+              extraPayment = extraPayment - loan[minPayment];
+            });
 
+            remainingLoans.forEach(function(loan){
+              // add interest
+              loan.balance = addInterestToBalance(loan.balance, loan.rate);
+              // pay minimum
+              loan.balance = payMinimum(loan.balance, loan.minPayment);
+              // pay extra_payment
 
+            });
 
-          // }
+          }
 
         } else {
           var principle = store.loans[0].balance;
@@ -62,6 +69,19 @@ angular.module('digOut')
 
     function loanPaymentTime(principle, monthlyPayment, rate){
       return (Math.log(monthlyPayment) - Math.log(monthlyPayment - principle * rate / 12)) / Math.log(1 + rate / 12);
+    };
+
+    function addInterestToBalance(principle,rate){
+      return (( rate/1200 * principle ) / ( 1 - Math.pow((1+rate/1200),-1)))
+    };
+
+    function payMinimum(principle, minPayment){
+      var result = principle - minPayment
+      if (result > 0) {
+        return principle - minPayment
+      } else {
+        return 0
+      };
     };
 
     return store
