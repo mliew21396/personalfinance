@@ -1,14 +1,7 @@
 angular.module('digOut')
   .factory('localStorage', function(){
-    function loan(name, balance, minPayment, rate) {
-      this.name = typeof name !== 'undefined' ? a : "";
-      this.balance = typeof balace !== 'undefined' ? a : "";
-      this.minPayment = typeof minPayment !== 'undefined' ? a : "";
-      this.rate = typeof rate !== 'undefined' ? a : "";;
-    };
-
     var store = {
-      loans: [],
+      loans: [new loan(1,1,1,1),new loan(2,2,2,2)],
 
       add: function() {
         store.loans.push(new loan())
@@ -19,23 +12,57 @@ angular.module('digOut')
       },
 
       payoff: function(monthlyPayment) {
-        // var sum = 0;
-        // if (store.loans.length > 1) {
-        //   sum = store.loans.reduce(function(previousValue, currentValue, index, array) {
-        //     return parseFloat(previousValue.balance) + parseFloat(currentValue.balance);
-        //   });
-        // } else {
-        //   sum = store.loans[0].balance
-        // }
+        if (store.loans.length > 1) {
+          var totalTime = 0;
+          // var remainingLoans = {};
+          var remainingLoans = store.loans;
+          console.log(remainingLoans);
+          // var currentPrinciple = {};
+          var currentBalance = calculateBalance();
+          console.log(currentBalance);
 
-        var principle = store.loans[0].balance;
-        var rate = parseFloat(store.loans[0].rate)/100;
-        var time = (Math.log(m) - Math.log(m - principle * rate / 12)) / Math.log(1 + rate / 12);
-        return time
 
-        // return sum / monthlyPayment;
+          // // Loop over months
+          // var counter = 0;
+          // while(Object.keys(remainingLoans).length > 0) {
+          //   counter++;
+          //   // if (counter > 12*100) {
+          //   //   return null;
+          //   // };
+
+          //   var extraPayment = monthlyPayment;
+          //   remainingLoans.forEach(function(loan){
+          //     extraPayment = extraPayment - loan[minPayment]
+          //   })
+
+
+
+          // }
+
+        } else {
+          var principle = store.loans[0].balance;
+          var rate = parseFloat(store.loans[0].rate)/100;
+          return loanPaymentTime(principle, monthlyPayment, rate);
+        }
       }
-
     };
+
+    function calculateBalance() {
+      return store.loans.reduce(function(previousValue, currentValue, index, array) {
+        return parseFloat(previousValue.balance) + parseFloat(currentValue.balance);
+      });
+    };
+
+    function loan(name, balance, minPayment, rate) {
+      this.name = typeof name !== 'undefined' ? name : "";
+      this.balance = typeof balance !== 'undefined' ? balance : "";
+      this.minPayment = typeof minPayment !== 'undefined' ? minPayment : "";
+      this.rate = typeof rate !== 'undefined' ? rate : "";;
+    };
+
+    function loanPaymentTime(principle, monthlyPayment, rate){
+      return (Math.log(monthlyPayment) - Math.log(monthlyPayment - principle * rate / 12)) / Math.log(1 + rate / 12);
+    };
+
     return store
   })
