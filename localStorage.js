@@ -14,37 +14,59 @@ angular.module('digOut')
       payoff: function(monthlyPayment) {
         if (store.loans.length > 1) {
           var totalTime = 0;
-          // var remainingLoans = {};
-          var remainingLoans = store.loans;
-          console.log(remainingLoans);
+          // var remainingLoans = [];
+          // var remainingLoans = Object.create(store.loans);
+          var remainingLoans = JSON.parse(JSON.stringify(store.loans));
+          // console.log(remainingLoans);
+          // console.log(remainingLoans[0]);
           // var currentPrinciple = {};
           var currentBalance = calculateBalance();
-          console.log(currentBalance);
+          // console.log(currentBalance);
 
+          // store.loans.forEach(function(loan){
+          //   remainingLoans[store.loans.indexOf(loan)] = loan;
+          // })
 
           // Loop over months
           var counter = 0;
-          while(Object.keys(remainingLoans).length > 0) {
+          while(remainingLoans.length > 0) {
+            console.log("counter: "+counter)
+          console.log("start");
+          // console.log(Object.keys(remainingLoans).length);
             counter++;
             // if (counter > 12*100) {
             //   return null;
             // };
 
             var extraPayment = monthlyPayment;
+            // console.log("length:"+remainingLoans.length)
+            // for(loan in remainingLoans) {
             remainingLoans.forEach(function(loan){
-              extraPayment = extraPayment - loan[minPayment];
+              // console.log(loan.balance)
+              console.log(loan);
+              console.log(loan.balance);
+              // console.log("remainingLoans:" + remainingLoans);
+              if (loan.balance <= 0) {
+                console.log("index:" + remainingLoans.indexOf(loan))
+                remainingLoans.splice(remainingLoans.indexOf(loan),1)
+                // console.log(remainingLoans);
+              };
+              extraPayment = extraPayment - loan["minPayment"];
             });
-
+            // console.log(extraPayment);
             remainingLoans.forEach(function(loan){
               // add interest
               loan.balance = addInterestToBalance(loan.balance, loan.rate);
               // pay minimum
               loan.balance = payMinimum(loan.balance, loan.minPayment);
               // pay extra_payment
-
+              // console.log(loan)
             });
-
+            console.log("end")
           }
+          console.log(counter);
+          console.log(remainingLoans);
+          console.log("outside loop")
 
         } else {
           var principle = store.loans[0].balance;
@@ -80,6 +102,7 @@ angular.module('digOut')
       if (result > 0) {
         return principle - minPayment
       } else {
+        // extraPayment = extraPayment - result
         return 0
       };
     };
